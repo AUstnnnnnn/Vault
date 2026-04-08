@@ -882,3 +882,93 @@ ul { list-style: none; }
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+/* ── Password Gate ───────────────────────────────── */
+.gate {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+}
+
+.gate-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: heroIn 400ms var(--ease-out) both;
+}
+
+.gate-box.shake {
+  animation: shake 450ms var(--ease-out);
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  15%      { transform: translateX(-8px); }
+  35%      { transform: translateX(8px); }
+  55%      { transform: translateX(-5px); }
+  75%      { transform: translateX(5px); }
+}
+
+.gate-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent-light);
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.gate-hint {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+
+.gate-form {
+  display: flex;
+  gap: 8px;
+}
+
+.gate-input {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 9px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  width: 220px;
+  transition: border-color 150ms;
+}
+
+.gate-input:focus { border-color: var(--accent); }
+
+.gate-input.error { border-color: #cc241d; }
+
+.gate-input::placeholder { color: var(--text-dim); }
+
+.gate-btn {
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: transform 100ms var(--ease-out), background 150ms;
+}
+
+.gate-btn:hover { background: var(--accent-light); }
+.gate-btn:active { transform: scale(0.96); }
+
+.gate-error {
+  font-size: 12px;
+  color: #fb4934;
+  margin-top: 6px;
+}

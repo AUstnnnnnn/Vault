@@ -6,6 +6,7 @@ import { Search } from './pages/Search';
 import { Spotlight } from './components/Spotlight';
 import { AmbientLayer } from './components/AmbientLayer';
 import { Player } from './components/Player';
+import { PasswordGate } from './components/PasswordGate';
 import './styles/globals.css';
 import type { MediaItem } from './api/tmdb';
 
@@ -32,6 +33,7 @@ function App() {
   }
 
   return (
+    <PasswordGate>
     <BrowserRouter>
       <AmbientLayer src={ambientSrc} />
 
@@ -61,6 +63,7 @@ function App() {
         />
       )}
     </BrowserRouter>
+    </PasswordGate>
   );
 }
 
