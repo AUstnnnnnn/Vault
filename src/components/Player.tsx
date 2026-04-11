@@ -2,6 +2,40 @@ import { useEffect, useState } from 'react';
 import { getTVDetails, mediaTitle } from '../api/tmdb';
 import type { MediaItem, Season } from '../api/tmdb';
 
+interface Provider {
+  name: string;
+  movie: (id: number) => string;
+  tv: (id: number, s: number, e: number) => string;
+}
+
+const providers: Provider[] = [
+  {
+    name: 'VidSrc',
+    movie: (id) => `https://vidsrc.xyz/embed/movie/${id}`,
+    tv: (id, s, e) => `https://vidsrc.xyz/embed/tv/${id}/${s}/${e}`,
+  },
+  {
+    name: 'Embed.su',
+    movie: (id) => `https://embed.su/embed/movie/${id}`,
+    tv: (id, s, e) => `https://embed.su/embed/tv/${id}/${s}/${e}`,
+  },
+  {
+    name: 'AutoEmbed',
+    movie: (id) => `https://autoembed.co/movie/tmdb/${id}`,
+    tv: (id, s, e) => `https://autoembed.co/tv/tmdb/${id}-${s}-${e}`,
+  },
+  {
+    name: 'VidLink',
+    movie: (id) => `https://vidlink.pro/movie/${id}`,
+    tv: (id, s, e) => `https://vidlink.pro/tv/${id}/${s}/${e}`,
+  },
+  {
+    name: 'MultiEmbed',
+    movie: (id) => `https://multiembed.mov/?video_id=${id}&tmdb=1`,
+    tv: (id, s, e) => `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}`,
+  },
+];
+
 interface PlayerProps {
   item: MediaItem;
   type: 'movie' | 'tv';
@@ -13,6 +47,7 @@ export function Player({ item, type, onClose }: PlayerProps) {
   const [season, setSeason] = useState(1);
   const [episode, setEpisode] = useState(1);
   const [seasons, setSeasons] = useState<Season[]>([]);
+  const [providerIdx, setProviderIdx] = useState(0);
   const [iframeKey, setIframeKey] = useState(0);
 
   useEffect(() => {
@@ -55,9 +90,15 @@ export function Player({ item, type, onClose }: PlayerProps) {
     setIframeKey(k => k + 1);
   }
 
+  function handleProviderChange(idx: number) {
+    setProviderIdx(idx);
+    setIframeKey(k => k + 1);
+  }
+
+  const provider = providers[providerIdx];
   const embedUrl = type === 'movie'
-    ? `https://www.vidking.net/embed/movie/${item.id}`
-    : `https://www.vidking.net/embed/tv/${item.id}/${season}/${episode}`;
+    ? provider.movie(item.id)
+    : provider.tv(item.id, season, episode);
 
   const currentSeason = seasons.find(s => s.season_number === season);
   const episodeCount = currentSeason?.episode_count ?? 24;
@@ -74,30 +115,42 @@ export function Player({ item, type, onClose }: PlayerProps) {
         <div className="player-header">
           <span className="player-title">{mediaTitle(item)}</span>
 
-          {type === 'tv' && seasons.length > 0 && (
-            <div className="player-selectors">
-              <select
-                className="player-select"
-                value={season}
-                onChange={e => handleSeasonChange(Number(e.target.value))}
-              >
-                {seasons.map(s => (
-                  <option key={s.season_number} value={s.season_number}>
-                    {s.name}
-                  </option>
-                ))}
-              </select>
-              <select
-                className="player-select"
-                value={episode}
-                onChange={e => handleEpisodeChange(Number(e.target.value))}
-              >
-                {Array.from({ length: episodeCount }, (_, i) => i + 1).map(ep => (
-                  <option key={ep} value={ep}>Episode {ep}</option>
-                ))}
-              </select>
-            </div>
-          )}
+          <div className="player-selectors">
+            <select
+              className="player-select"
+              value={providerIdx}
+              onChange={e => handleProviderChange(Number(e.target.value))}
+            >
+              {providers.map((p, i) => (
+                <option key={p.name} value={i}>{p.name}</option>
+              ))}
+            </select>
+
+            {type === 'tv' && seasons.length > 0 && (
+              <>
+                <select
+                  className="player-select"
+                  value={season}
+                  onChange={e => handleSeasonChange(Number(e.target.value))}
+                >
+                  {seasons.map(s => (
+                    <option key={s.season_number} value={s.season_number}>
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className="player-select"
+                  value={episode}
+                  onChange={e => handleEpisodeChange(Number(e.target.value))}
+                >
+                  {Array.from({ length: episodeCount }, (_, i) => i + 1).map(ep => (
+                    <option key={ep} value={ep}>Ep {ep}</option>
+                  ))}
+                </select>
+              </>
+            )}
+          </div>
 
           <button className="player-close" onClick={close} aria-label="Close player">
             <svg width="14" height="14" viewBox="0 0 15 15" fill="currentColor">
