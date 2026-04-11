@@ -9,20 +9,20 @@ interface HeroProps {
 
 export function Hero({ item, onPlay }: HeroProps) {
   const [loaded, setLoaded] = useState(false);
-  const [transform, setTransform] = useState('scale(1.08)');
+  const [transform, setTransform] = useState('scale(1.06)');
   const targetX = useRef(0);
   const targetY = useRef(0);
   const currentX = useRef(0);
   const currentY = useRef(0);
-  const rafId = useRef<number>();
+  const rafId = useRef<number>(0);
 
   // Spring-lerp parallax loop
   useEffect(() => {
     function tick() {
-      currentX.current += (targetX.current - currentX.current) * 0.04;
-      currentY.current += (targetY.current - currentY.current) * 0.04;
+      currentX.current += (targetX.current - currentX.current) * 0.035;
+      currentY.current += (targetY.current - currentY.current) * 0.035;
       setTransform(
-        `scale(1.08) translate(${currentX.current.toFixed(2)}px, ${currentY.current.toFixed(2)}px)`
+        `scale(1.06) translate(${currentX.current.toFixed(2)}px, ${currentY.current.toFixed(2)}px)`
       );
       rafId.current = requestAnimationFrame(tick);
     }
@@ -32,8 +32,8 @@ export function Hero({ item, onPlay }: HeroProps) {
 
   useEffect(() => {
     function onMove(e: MouseEvent) {
-      targetX.current = ((e.clientX / window.innerWidth) - 0.5) * 28;
-      targetY.current = ((e.clientY / window.innerHeight) - 0.5) * 18;
+      targetX.current = ((e.clientX / window.innerWidth) - 0.5) * 22;
+      targetY.current = ((e.clientY / window.innerHeight) - 0.5) * 14;
     }
     window.addEventListener('mousemove', onMove);
     return () => window.removeEventListener('mousemove', onMove);

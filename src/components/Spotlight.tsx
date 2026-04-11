@@ -13,7 +13,7 @@ export function Spotlight({ onClose, onPlay }: SpotlightProps) {
   const [selected, setSelected] = useState(0);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     requestAnimationFrame(() => inputRef.current?.focus());
