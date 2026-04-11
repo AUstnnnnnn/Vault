@@ -34,7 +34,7 @@ function App() {
 
   return (
     <PasswordGate>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AmbientLayer src={ambientSrc} />
 
       <div style={{ position: 'relative', zIndex: 1 }}>
