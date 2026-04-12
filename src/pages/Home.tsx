@@ -4,7 +4,6 @@ import { Row } from '../components/Row';
 import { Player } from '../components/Player';
 import { DetailModal } from '../components/DetailModal';
 import {
-  getTrending,
   getEssentialViewing,
   getWorldCinema,
   getDeepCuts,
