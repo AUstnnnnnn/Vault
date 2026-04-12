@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { search } from '../api/tmdb';
 import type { MediaItem } from '../api/tmdb';
 import { PosterCard } from '../components/PosterCard';
+import { DetailModal } from '../components/DetailModal';
 import { Player } from '../components/Player';
 
 export function Search() {
@@ -10,7 +11,8 @@ export function Search() {
   const [query, setQuery] = useState(searchParams.get('q') ?? '');
   const [results, setResults] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(false);
-  const [playing, setPlaying] = useState<{ item: MediaItem; type: 'movie' | 'tv' } | null>(null);
+  const [detail, setDetail] = useState<{ item: MediaItem; type: 'movie' | 'tv' } | null>(null);
+  const [playing, setPlaying] = useState<{ item: MediaItem; type: 'movie' | 'tv'; season?: number; episode?: number } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -42,8 +44,8 @@ export function Search() {
     }, 300);
   }
 
-  function openPlayer(item: MediaItem, type: 'movie' | 'tv') {
-    setPlaying({ item, type });
+  function openPlayer(item: MediaItem, type: 'movie' | 'tv', season?: number, episode?: number) {
+    setPlaying({ item, type, season, episode });
   }
 
   return (
@@ -93,7 +95,7 @@ export function Search() {
                   key={item.id}
                   item={item}
                   type={item.media_type === 'tv' ? 'tv' : 'movie'}
-                  onPlay={openPlayer}
+                  onSelect={(it, t) => setDetail({ item: it, type: t })}
                   animationDelay={i * 40}
                 />
               ))}
@@ -109,10 +111,21 @@ export function Search() {
         )}
       </div>
 
+      {detail && (
+        <DetailModal
+          item={detail.item}
+          type={detail.type}
+          onClose={() => setDetail(null)}
+          onPlay={openPlayer}
+        />
+      )}
+
       {playing && (
         <Player
           item={playing.item}
           type={playing.type}
+          initialSeason={playing.season}
+          initialEpisode={playing.episode}
           onClose={() => setPlaying(null)}
         />
       )}

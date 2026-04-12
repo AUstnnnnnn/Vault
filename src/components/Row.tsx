@@ -6,11 +6,11 @@ interface RowProps {
   title: string;
   items: MediaItem[];
   type?: 'movie' | 'tv';
-  onPlay: (item: MediaItem, type: 'movie' | 'tv') => void;
+  onSelect: (item: MediaItem, type: 'movie' | 'tv') => void;
   onHover?: (src: string | null) => void;
 }
 
-export function Row({ title, items, type, onPlay, onHover }: RowProps) {
+export function Row({ title, items, type, onSelect, onHover }: RowProps) {
   const trackRef = useRef<HTMLDivElement>(null);
 
   function scroll(dir: 'left' | 'right') {
@@ -42,7 +42,7 @@ export function Row({ title, items, type, onPlay, onHover }: RowProps) {
               key={item.id}
               item={item}
               type={type}
-              onPlay={onPlay}
+              onSelect={onSelect}
               onHover={onHover}
               animationDelay={i * 35}
             />

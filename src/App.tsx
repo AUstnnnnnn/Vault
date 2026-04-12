@@ -42,8 +42,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home onHover={setAmbientSrc} />} />
-          <Route path="/movies" element={<Home onHover={setAmbientSrc} />} />
-          <Route path="/tv" element={<Home onHover={setAmbientSrc} />} />
+          <Route path="/movies" element={<Home filter="movie" onHover={setAmbientSrc} />} />
+          <Route path="/tv" element={<Home filter="tv" onHover={setAmbientSrc} />} />
           <Route path="/search" element={<Search />} />
         </Routes>
       </div>

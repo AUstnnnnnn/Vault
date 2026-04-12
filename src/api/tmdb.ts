@@ -33,10 +33,68 @@ async function get(endpoint: string, params: Record<string, string> = {}) {
 }
 
 export const getTrending = () => get('/trending/all/week');
-export const getPopularMovies = () => get('/movie/popular');
-export const getTopRatedTV = () => get('/tv/top_rated');
-export const getNowPlaying = () => get('/movie/now_playing');
-export const getUpcoming = () => get('/movie/upcoming');
+
+export const getEssentialViewing = () =>
+  get('/discover/movie', {
+    sort_by: 'vote_average.desc',
+    'vote_count.gte': '1000',
+    'vote_average.gte': '8',
+    with_genres: '18',
+  });
+
+const intlLanguages = ['ja', 'ko', 'fr', 'it', 'es', 'de', 'pt', 'zh', 'sv', 'da'];
+export const getWorldCinema = () => {
+  const lang = intlLanguages[Math.floor(Math.random() * intlLanguages.length)];
+  return get('/discover/movie', {
+    sort_by: 'vote_average.desc',
+    'vote_count.gte': '200',
+    'vote_average.gte': '7.5',
+    with_original_language: lang,
+  });
+};
+
+export const getDeepCuts = () =>
+  get('/discover/movie', {
+    sort_by: 'vote_average.desc',
+    'vote_count.gte': '100',
+    'vote_count.lte': '800',
+    'vote_average.gte': '7.5',
+    'primary_release_date.lte': '1990-12-31',
+  });
+
+export const getNewArrivals = () =>
+  get('/discover/movie', {
+    sort_by: 'vote_average.desc',
+    'vote_count.gte': '50',
+    'vote_average.gte': '6.5',
+    'primary_release_date.gte': new Date(Date.now() - 90 * 86400000).toISOString().slice(0, 10),
+  });
+
+export const getSlowBurn = () =>
+  get('/discover/tv', {
+    sort_by: 'vote_average.desc',
+    'vote_count.gte': '500',
+    'vote_average.gte': '8',
+  });
+
+export const get2000sTV = () =>
+  get('/discover/tv', {
+    sort_by: 'popularity.desc',
+    'vote_count.gte': '200',
+    'vote_average.gte': '7',
+    'first_air_date.gte': '2000-01-01',
+    'first_air_date.lte': '2009-12-31',
+  });
+
+export const getClassicCartoons = () =>
+  get('/discover/tv', {
+    sort_by: 'popularity.desc',
+    'vote_count.gte': '50',
+    with_genres: '16',
+    with_networks: '56',
+    'first_air_date.gte': '1992-01-01',
+    'first_air_date.lte': '2010-12-31',
+  });
 
 export const getTVDetails = (id: number) => get(`/tv/${id}`);
 

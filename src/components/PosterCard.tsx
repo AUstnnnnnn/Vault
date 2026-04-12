@@ -4,12 +4,12 @@ import type { MediaItem } from '../api/tmdb';
 interface PosterCardProps {
   item: MediaItem;
   type?: 'movie' | 'tv';
-  onPlay: (item: MediaItem, type: 'movie' | 'tv') => void;
+  onSelect: (item: MediaItem, type: 'movie' | 'tv') => void;
   onHover?: (src: string | null) => void;
   animationDelay?: number;
 }
 
-export function PosterCard({ item, type, onPlay, onHover, animationDelay = 0 }: PosterCardProps) {
+export function PosterCard({ item, type, onSelect, onHover, animationDelay = 0 }: PosterCardProps) {
   const mediaType = type ?? (item.media_type === 'tv' ? 'tv' : 'movie');
 
   function handleMouseEnter() {
@@ -26,7 +26,7 @@ export function PosterCard({ item, type, onPlay, onHover, animationDelay = 0 }: 
     <div
       className="card"
       style={animationDelay ? { animationDelay: `${Math.min(animationDelay, 245)}ms` } : undefined}
-      onClick={() => onPlay(item, mediaType)}
+      onClick={() => onSelect(item, mediaType)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

@@ -4,10 +4,11 @@ import type { MediaItem } from '../api/tmdb';
 
 interface HeroProps {
   item: MediaItem | null;
+  onSelect: (item: MediaItem) => void;
   onPlay: (item: MediaItem) => void;
 }
 
-export function Hero({ item, onPlay }: HeroProps) {
+export function Hero({ item, onSelect, onPlay }: HeroProps) {
   const [loaded, setLoaded] = useState(false);
   const [transform, setTransform] = useState('scale(1.06)');
   const targetX = useRef(0);
@@ -94,10 +95,18 @@ export function Hero({ item, onPlay }: HeroProps) {
 
         <div className="hero-actions">
           <button className="btn-primary" onClick={() => onPlay(item)}>
-            <svg width="14" height="14" viewBox="0 0 15 15" fill="currentColor">
+            <svg width="12" height="12" viewBox="0 0 15 15" fill="currentColor">
               <path d="M3 2.5a.5.5 0 0 1 .757-.429l10 5.5a.5.5 0 0 1 0 .858l-10 5.5A.5.5 0 0 1 3 13.5v-11Z"/>
             </svg>
-            Watch Now
+            Watch
+          </button>
+          <button className="detail-btn" onClick={() => onSelect(item)}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            Info
           </button>
         </div>
       </div>
