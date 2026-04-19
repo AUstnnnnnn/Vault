@@ -962,6 +962,100 @@ ul { list-style: none; }
   pointer-events: none;
 }
 
+/* ── Settings (gear) button + source menu ──────── */
+.player-source {
+  position: relative;
+  pointer-events: auto;
+}
+
+.player-settings-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.10);
+  border: 0;
+  border-radius: 4px;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 150ms, transform 150ms var(--ease-out);
+}
+
+.player-settings-btn:hover { background: rgba(255, 255, 255, 0.18); }
+.player-settings-btn:active { transform: scale(0.92); }
+.player-settings-btn svg { transition: transform 400ms var(--ease-out); }
+.player-settings-btn:hover svg { transform: rotate(45deg); }
+
+.player-source-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+}
+
+.player-source-menu {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  min-width: 220px;
+  background: rgba(18, 18, 18, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 21;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.player-source-section-label {
+  padding: 8px 10px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.player-source-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 120ms;
+}
+
+.player-source-option:hover { background: rgba(255, 255, 255, 0.06); }
+.player-source-option.active { background: rgba(255, 79, 0, 0.12); color: var(--accent); }
+
+.player-source-name { flex: 1; font-weight: 600; }
+
+.player-source-tier {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+}
+
+.player-source-option.active .player-source-tier {
+  background: rgba(255, 79, 0, 0.18);
+  color: var(--accent);
+}
+
 /* ── Player responsive ──────────────────────────── */
 @media (max-width: 768px) {
   .player-top { padding: 14px 16px; }
